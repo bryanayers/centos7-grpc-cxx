@@ -22,6 +22,7 @@ RUN \
 		gtest-devel \
 		libtool \
 		make \
+		patch \
 		unzip \
 		wget \
 		which \
@@ -29,23 +30,24 @@ RUN \
 		zlib-devel &&\
 	yum clean all
 
-# Install protoc 3.0.0
+# Install protoc from binary release package
+ENV PROTOC_RELEASE_TAG 3.0.2
+
 RUN \
-	wget https://github.com/google/protobuf/releases/download/v3.0.0/protoc-3.0.0-linux-x86_64.zip &&\
-	unzip protoc-3.0.0-linux-x86_64.zip -d /usr/local &&\
-	rm -f protoc-3.0.0-linux-x86_64.zip
+	wget https://github.com/google/protobuf/releases/download/v${PROTOC_RELEASE_TAG}/protoc-${PROTOC_RELEASE_TAG}-linux-x86_64.zip &&\
+	unzip protoc-${PROTOC_RELEASE_TAG}-linux-x86_64.zip -d /usr/local &&\
+	rm -f protoc-${PROTOC_RELEASE_TAG}-linux-x86_64.zip
 
 # Build grpc
-ENV GRPC_RELEASE_TAG release-0_15_1
+ENV GRPC_RELEASE_TAG v1.0.0
 
 RUN git clone https://github.com/grpc/grpc.git /usr/local/src/grpc
 RUN \
 	cd /usr/local/src/grpc &&\
 	git checkout tags/${GRPC_RELEASE_TAG} &&\
-	git submodule update --init --recursive
-
-RUN \
+	git submodule update --init --recursive &&\
 	cd /usr/local/src/grpc/third_party/protobuf &&\
+	curl -o- https://github.com/google/protobuf/commit/bba446bbf2ac7b0b9923d4eb07d5acd0665a8cf0.diff | patch -p1 &&\
 	./autogen.sh &&\
 	./configure --prefix=/usr &&\
 	make -j12 && make check && make install && make clean
