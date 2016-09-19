@@ -50,7 +50,9 @@ RUN \
 	curl -o- https://github.com/google/protobuf/commit/bba446bbf2ac7b0b9923d4eb07d5acd0665a8cf0.diff | patch -p1 &&\
 	./autogen.sh &&\
 	./configure --prefix=/usr &&\
-	make -j12 && make check && make install && make clean
+	make -j12 && make check && make install && make clean &&\
+	cd /usr/local/src/ &&\
+	rm -Rf grpc*
 
 RUN cd /usr/local/src/grpc && make install
 
