@@ -31,7 +31,7 @@ RUN \
 	yum clean all
 
 # Install protoc from binary release package
-ENV PROTOC_RELEASE_TAG 3.1.0
+ENV PROTOC_RELEASE_TAG 3.0.2
 
 RUN \
 	wget https://github.com/google/protobuf/releases/download/v${PROTOC_RELEASE_TAG}/protoc-${PROTOC_RELEASE_TAG}-linux-x86_64.zip &&\
