@@ -31,7 +31,7 @@ RUN \
 	yum clean all
 
 # Install protoc from binary release package
-ENV PROTOC_RELEASE_TAG 3.0.2
+ENV PROTOC_RELEASE_TAG 3.1.0
 
 RUN \
 	wget https://github.com/google/protobuf/releases/download/v${PROTOC_RELEASE_TAG}/protoc-${PROTOC_RELEASE_TAG}-linux-x86_64.zip &&\
@@ -39,7 +39,7 @@ RUN \
 	rm -f protoc-${PROTOC_RELEASE_TAG}-linux-x86_64.zip
 
 # Build grpc
-ENV GRPC_RELEASE_TAG v1.0.0
+ENV GRPC_RELEASE_TAG v1.0.1
 
 RUN git clone https://github.com/grpc/grpc.git /usr/local/src/grpc
 RUN \
@@ -47,7 +47,6 @@ RUN \
 	git checkout tags/${GRPC_RELEASE_TAG} &&\
 	git submodule update --init --recursive &&\
 	cd /usr/local/src/grpc/third_party/protobuf &&\
-	curl -o- https://github.com/google/protobuf/commit/bba446bbf2ac7b0b9923d4eb07d5acd0665a8cf0.diff | patch -p1 &&\
 	./autogen.sh &&\
 	./configure --prefix=/usr &&\
 	make -j12 && make check && make install && make clean &&\
