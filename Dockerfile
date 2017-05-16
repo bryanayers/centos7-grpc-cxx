@@ -31,7 +31,7 @@ RUN \
 	yum clean all
 
 # Install protoc from binary release package
-ENV PROTOC_RELEASE_TAG 3.1.0
+ENV PROTOC_RELEASE_TAG 3.2.0
 
 RUN \
 	wget https://github.com/google/protobuf/releases/download/v${PROTOC_RELEASE_TAG}/protoc-${PROTOC_RELEASE_TAG}-linux-x86_64.zip &&\
@@ -39,7 +39,7 @@ RUN \
 	rm -f protoc-${PROTOC_RELEASE_TAG}-linux-x86_64.zip
 
 # Build grpc
-ENV GRPC_RELEASE_TAG v1.1.4
+ENV GRPC_RELEASE_TAG v1.3.2
 
 RUN git clone https://github.com/grpc/grpc.git /usr/local/src/grpc
 RUN \
